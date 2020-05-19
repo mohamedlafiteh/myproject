@@ -1,22 +1,48 @@
 {% load static %}
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta charset="utf-8" />
+    <title>Article Python App</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
-    <title>Article list</title>
   </head>
+
   <body>
-    <div class="='wrapper'">
+    <header class="wrapper">
       <h1>
-        <a href="{% url 'articles:list' %}"
-          ><img src="{% static 'logo.jpeg' %}"
+        <a href="{% url 'home' %}"
+          ><img
+            class="logo-image"
+            src="{% static 'logo.jpeg' %}"
+            alt="Article Python App"
         /></a>
       </h1>
-
+      <nav>
+        <ul>
+          {% if user.is_authenticated %}
+          <li>
+            <form
+              class="logout-link"
+              action="{% url 'accounts:logout' %}"
+              method="post"
+            >
+              {% csrf_token %}
+              <button type="submit">Logout</button>
+            </form>
+          </li>
+          <li>
+            <a href="{% url 'articles:create' %}" class="highlight"
+              >New Article</a
+            >
+          </li>
+          {% else %}
+          <li><a href="{% url 'accounts:login' %}">Login</a></li>
+          <li><a href="{% url 'accounts:signup' %}">Signup</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    <div class="wrapper">
       {% block content %} {% endblock %}
     </div>
   </body>
